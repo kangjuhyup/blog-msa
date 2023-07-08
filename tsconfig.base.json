@@ -14,7 +14,13 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@dto/*" : ["libs/shared/src/lib/dto/*"],
+      "@entity/*" : ["libs/shared/src/lib/entity/*"],
+      "@topic/*" : ["libs/shared/src/lib/topic/*"],
+      "@database/*": ["libs/shared/src/lib/database/*"],
+      "@exception/*": ["libs/shared/src/lib/exception/*"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
