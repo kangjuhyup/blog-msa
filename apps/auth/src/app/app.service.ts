@@ -11,7 +11,8 @@ export class AppService {
   ){}
 
   getNonce() {
-    return generateNonce();
+    const nonce = generateNonce();
+    return nonce;
   }
 
   async verifyUser(

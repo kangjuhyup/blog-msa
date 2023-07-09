@@ -8,24 +8,10 @@ import { VerifyDto } from '@dto/auth/verify.dto';
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @EventPattern(AuthRequestTopic.GET_NONCE)
+  @MessagePattern(AuthRequestTopic.GET_NONCE)
   getNonce(
   ) {
+    console.log('getNonce')
     return this.appService.getNonce();
-  }
-
-  @EventPattern(AuthRequestTopic.LOGIN)
-  verifyUser(
-    address:string
-  ) {
-    return this.appService.verifyUser(address);
-  }
-
-  @EventPattern(AuthRequestTopic.VERIFY)
-  verify(
-    nonce: string,
-    dto: VerifyDto,
-  ) {
-    return this.appService.verifyMessage(nonce,dto)
   }
 }
