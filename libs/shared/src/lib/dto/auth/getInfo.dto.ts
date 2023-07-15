@@ -1,6 +1,6 @@
 import { IsEthereumAddress, IsString } from "class-validator";
 
-export class SignUpDto {
+export class GetInfoDto {
     @IsEthereumAddress()
     address : string;
 }

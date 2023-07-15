@@ -15,28 +15,19 @@ export class AuthController {
     return this.service.getNonce(request,response);
   }
 
-//   @Post('verify')
-//   verify(
-//     @Req() request:Request,
-//     @Res() response:Response,
-//     @Body() dto : VerifyDto
-//   ) {
-//       return this.service.verifyMessage(request,response,dto);
-//   }
+  @Post('logIn')
+  logIn(
+    @Req() request:Request,
+    @Res() response:Response,
+    @Body() dto : VerifyDto
+  ) {
+      return this.service.logIn(request,response,dto);
+  }
 
-//   @Get('logIn')
-//   logIn(
-//     @Req() request:Request,
-//     @Res() response:Response,
-//   ) {
-//       return this.service.logIn(request,response);
-//   }
-
-//   @Get('logOut')
-//   logOut(
-//       @Req() request:Request,
-//       @Res() response:Response
-//   ) {
-//       return this.service.logOut(request,response);
-//   }
+  @Get('logOut')
+  logOut(
+      @Req() request:Request,
+  ) {
+      return this.service.logOut(request);
+  }
 }

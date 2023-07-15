@@ -4,8 +4,8 @@ import { AuthRequestTopic } from '@topic/auth.topic'
 import { Response,Request } from 'express';
 import { SiweMessage } from 'siwe';
 import { InvaildAddressException } from '@exception/custom/invaildAddress.exception'
-import { VerifyDto } from '@dto/auth/verify.dto';
-
+import { GetInfoDto } from '@dto/auth/getInfo.dto';
+import { UserEntity } from '@entity/user.entity'
 declare module "iron-session" {
   interface IronSessionData {
     nonce?: string | null;
@@ -14,7 +14,7 @@ declare module "iron-session" {
 }
 
 @Injectable()
-export class AuthService implements OnModuleInit, OnModuleDestroy {
+export class UserService implements OnModuleInit, OnModuleDestroy {
 
   constructor(
     @Inject('AUTH_MICROSERVICE') private readonly authClient: ClientKafka
@@ -29,45 +29,20 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
     await this.authClient.close();
   }
 
-  async getNonce(
+  async getInfo(
     request:Request,
-    response:Response
+    response:Response,
+    dto:GetInfoDto,
   ) {
     this.authClient
-    .send(AuthRequestTopic.GET_NONCE,'')
-    .subscribe( async (nonce:string) => {
-      request.session.nonce = nonce;
-      await request.session.save();
+    .send(AuthRequestTopic.GET_INFO,dto)
+    .subscribe( async (user:UserEntity) => {
       response.send({
         success : true,
-        nonce : request.session.nonce
+        user : user,
       });
     })
   }
 
-  async logIn(
-    request:Request,
-    response:Response,
-    dto:VerifyDto,
-  ) {
-    this.authClient
-    .send(AuthRequestTopic.VERIFY,{ nonce:request.session.nonce, dto })
-    .subscribe( async (fields:SiweMessage) => {
-      request.session.swie = fields
-      await request.session.save()
-      response.send({
-        success : true,
-      })
-    })
-  }
-
-
-  async logOut(
-    request:Request,
-  ) {
-    request.session.destroy();
-    return {
-      success : true,
-    }
-  }
+  
 }

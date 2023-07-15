@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
+import { ArticleEntity } from "./article.entity";
 
 @Entity()
 export class UserEntity {
@@ -9,14 +10,17 @@ export class UserEntity {
     address : string;
 
     @Column({nullable:true})
-    nick_name : string;
+    nick_name? : string;
 
     @Column({nullable:true})
-    profile : string;
-
+    profile? : string;
 
     @Column({nullable:true})
-    jwt_refresh_token : string;
+    background? : string;
+
+    @OneToMany(type => ArticleEntity, article => article.user)
+    articles : ArticleEntity[]
+
 
     constructor(
         _uuid : string,
@@ -24,11 +28,12 @@ export class UserEntity {
         _jwt_refresh_token? : string,
         _nick_name? : string,
         _profile? : string,
+        _background? : string,
     ) {
         this.address = _address;
         this.uuid = _uuid;
-        if(_jwt_refresh_token) this.jwt_refresh_token = _jwt_refresh_token;
-        if(_nick_name) this.nick_name = _nick_name
-        if(_profile) this.profile = _profile
+        this.nick_name = _nick_name
+        this.profile = _profile
+        this.background = _background
     } 
 } 

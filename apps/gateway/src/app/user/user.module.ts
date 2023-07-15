@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { Partitioners } from 'kafkajs';
-import { AuthController } from './auth.controller';
-import { AuthService } from './auth.service';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 
 @Module({
   imports: [
@@ -23,7 +23,7 @@ import { AuthService } from './auth.service';
         },
       ]),
   ],
-  controllers: [AuthController],
-  providers: [AuthService],
+  controllers: [UserController],
+  providers: [UserService],
 })
-export class AuthModule {}
+export class UserModule {}
