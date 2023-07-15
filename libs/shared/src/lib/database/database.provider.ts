@@ -8,7 +8,7 @@ interface DatabaseParam {
     database : string
 }
 
-export const databaseProviders = ({
+export const databaseProvider = ({
     host,
     port,
     username,
