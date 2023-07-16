@@ -1,5 +1,5 @@
 import { Controller } from '@nestjs/common';
-import { EventPattern, MessagePattern } from '@nestjs/microservices';
+import { MessagePattern } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { AuthRequestTopic } from '@topic/auth.topic';
 import { VerifyDto } from '@dto/auth/verify.dto';
@@ -16,10 +16,9 @@ export class AppController {
 
   @MessagePattern(AuthRequestTopic.VERIFY)
   verifyMessage(
-    nonce: string,
-    dto : VerifyDto
+    data: any,
   ) {
-    return this.appService.verifyMessage(nonce,dto)
+    return this.appService.verifyMessage(data)
   }
 
   @MessagePattern(AuthRequestTopic.GET_INFO)

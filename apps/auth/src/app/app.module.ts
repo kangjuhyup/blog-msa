@@ -1,10 +1,13 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthJwtModule } from './jwt/jwt.module';
-import { UserModule } from './repository/user.module';
 import { ConfigModule } from '@nestjs/config'
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { UserModule } from './repository/user.module';
+import { UserEntity } from '@entity/user.entity';
+import { ArticleEntity } from '@entity/article.entity';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 @Module({
   imports: [
     ClientsModule.register([
@@ -26,7 +29,6 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       isGlobal:true
     }),
     UserModule,
-    // AuthJwtModule,
   ],
   controllers: [AppController],
   providers: [AppService],

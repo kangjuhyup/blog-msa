@@ -9,7 +9,7 @@ export class ArticleEntity {
     @Column()
     CIDs : string;
 
-    @ManyToOne(type => UserEntity, user => user.uuid)
+    @ManyToOne(() => UserEntity, (user) => user.articles)
     user : UserEntity;
 
     constructor(

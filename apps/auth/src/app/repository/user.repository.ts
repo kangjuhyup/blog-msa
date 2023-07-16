@@ -8,16 +8,16 @@ export class UserRepository {
     @Inject('USER_REPOSITORY') private repository: Repository<UserEntity>,
   ) {}
 
-  upsert(user: UserEntity): Promise<UserEntity> {
-    return this.repository.save(user).catch((err) => {
-      throw err;
-    });
+  async upsert(user: UserEntity): Promise<UserEntity> {
+    return await this.repository.save(user);
   }
 
-  findOne(address: string): Promise<UserEntity> {
-    return this.repository.findOne({
+  
+
+  async findOne(address: string): Promise<UserEntity> {
+    return await this.repository.findOne({
       where: {
-        address,
+        address: address,
       },
     });
   }

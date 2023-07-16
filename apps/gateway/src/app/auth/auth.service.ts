@@ -6,12 +6,6 @@ import { SiweMessage } from 'siwe';
 import { InvaildAddressException } from '@exception/custom/invaildAddress.exception'
 import { VerifyDto } from '@dto/auth/verify.dto';
 
-declare module "iron-session" {
-  interface IronSessionData {
-    nonce?: string | null;
-    swie? : SiweMessage | null
-  }
-}
 
 @Injectable()
 export class AuthService implements OnModuleInit, OnModuleDestroy {
@@ -22,8 +16,10 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   }
   async onModuleInit() {
     this.authClient.subscribeToResponseOf(AuthRequestTopic.GET_NONCE); 
+    this.authClient.subscribeToResponseOf(AuthRequestTopic.VERIFY);
     await this.authClient.connect();
   }
+
 
   async onModuleDestroy() {
     await this.authClient.close();
@@ -36,11 +32,14 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
     this.authClient
     .send(AuthRequestTopic.GET_NONCE,'')
     .subscribe( async (nonce:string) => {
-      request.session.nonce = nonce;
-      await request.session.save();
+
+      // request.session.nonce = nonce;
+      // await request.session.save();
+
+      response.cookie('nonce', nonce);
       response.send({
         success : true,
-        nonce : request.session.nonce
+        nonce : nonce
       });
     })
   }
@@ -50,11 +49,19 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
     response:Response,
     dto:VerifyDto,
   ) {
+    console.log('cookies' , request.cookies)
+    console.log('nonce => ', request.cookies['nonce']);
+    // const nonce = request.session.nonce;
+    const nonce = request.cookies['nonce'];
+     
+    console.log('dto => ', dto);
     this.authClient
-    .send(AuthRequestTopic.VERIFY,{ nonce:request.session.nonce, dto })
+    .send(AuthRequestTopic.VERIFY,JSON.stringify({ nonce : nonce, dto }))
     .subscribe( async (fields:SiweMessage) => {
-      request.session.swie = fields
-      await request.session.save()
+      // request.session.swie = fields
+      // await request.session.save()
+
+      response.cookie('swie', fields);
       response.send({
         success : true,
       })
@@ -65,7 +72,9 @@ export class AuthService implements OnModuleInit, OnModuleDestroy {
   async logOut(
     request:Request,
   ) {
-    request.session.destroy();
+    
+    request.session = null;
+    // request.session.destroy();
     return {
       success : true,
     }

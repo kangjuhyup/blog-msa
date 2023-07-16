@@ -18,17 +18,17 @@ export class UserEntity {
     @Column({nullable:true})
     background? : string;
 
-    @OneToMany(type => ArticleEntity, article => article.user)
-    articles : ArticleEntity[]
+    @OneToMany(() => ArticleEntity, (article) => article.user)
+    articles? : ArticleEntity[]
 
 
     constructor(
         _uuid : string,
         _address : string,
-        _jwt_refresh_token? : string,
         _nick_name? : string,
         _profile? : string,
         _background? : string,
+        
     ) {
         this.address = _address;
         this.uuid = _uuid;

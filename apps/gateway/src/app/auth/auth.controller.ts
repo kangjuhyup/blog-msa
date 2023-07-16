@@ -21,6 +21,7 @@ export class AuthController {
     @Res() response:Response,
     @Body() dto : VerifyDto
   ) {
+      console.log('logIn')
       return this.service.logIn(request,response,dto);
   }
 

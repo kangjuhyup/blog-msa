@@ -1,3 +1,5 @@
+import { ArticleEntity } from '@entity/article.entity';
+import { UserEntity } from '@entity/user.entity';
 import { DataSource } from 'typeorm';
 
 interface DatabaseParam {
@@ -27,11 +29,12 @@ export const databaseProvider = ({
                 password,
                 database,
                 entities: [
-                    __dirname + '/../**/*.entity{.ts,.js}',
-                ],
+                  UserEntity,
+                  ArticleEntity,
+                  ],               
                 synchronize: true,
               });
-        
+              console.log('entities : ' , dataSource.entityMetadatas);
               return dataSource.initialize();
             },
           },

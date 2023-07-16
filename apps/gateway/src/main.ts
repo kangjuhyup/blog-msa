@@ -5,18 +5,30 @@
 
 import { Logger } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import {ironSession} from 'iron-session/express';
-import { ironOptions } from './app/auth/session/session.options';
-
+import session from 'express-session';
 import { AppModule } from './app/app.module';
+import { SiweMessage } from 'siwe';
+import cookieParser from 'cookie-parser';
+
+declare module "express-session" {
+  interface SessionData {
+    nonce?: string | null;
+    swie? : SiweMessage | null
+  }
+}
+
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   const globalPrefix = 'api';
-  app.use(
-    ironSession(ironOptions),
-  )
+  app.enableCors({ credentials : true, origin : true });
   app.setGlobalPrefix(globalPrefix);
+  app.use(session({
+    secret : 'kangjuhyup1993',
+    resave : false,
+    saveUninitialized : true,
+  }))
+  app.use(cookieParser())
   const port = process.env.PORT || 8000;
   await app.startAllMicroservices();
   await app.listen(port);

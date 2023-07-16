@@ -1,27 +1,10 @@
 import { Module } from '@nestjs/common';
-import { ClientsModule, Transport } from '@nestjs/microservices';
-import { Partitioners } from 'kafkajs';
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
-
+import { KafkaModule } from '../kafka/kafka.module';
 @Module({
   imports: [
-    ClientsModule.register([
-        {
-          name: 'AUTH_MICROSERVICE',
-          transport: Transport.KAFKA,
-          options: {
-            client: {
-              clientId: 'auth',
-              brokers: ['localhost:29092'],
-            },
-            consumer: {
-              groupId: 'auth-consumer',
-            },
-            producer : { createPartitioner : Partitioners.LegacyPartitioner}
-          },
-        },
-      ]),
+    KafkaModule.forRoot('user'),
   ],
   controllers: [UserController],
   providers: [UserService],
