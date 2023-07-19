@@ -5,6 +5,8 @@ dist
 tmp
 /out-tsc
 
+ganache_data
+
 # dependencies
 node_modules
 
