@@ -7,16 +7,22 @@ export class ArticleEntity {
     article_uuid : string;
 
     @Column()
-    CIDs : string;
+    cids : string;
+
+    @Column()
+    collection_address : string;
+
+    @Column()
+    collection_id : number;
 
     @ManyToOne(() => UserEntity, (user) => user.articles)
     user : UserEntity;
 
     constructor(
-        _CIDs : string,
+        _cids : string,
         _user : UserEntity,
     ) {
-        this.CIDs = _CIDs
+        this.cids = _cids
         this.user = _user
     } 
 }

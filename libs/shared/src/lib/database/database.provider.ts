@@ -17,6 +17,11 @@ export const databaseProvider = ({
     password,
     database
 }: DatabaseParam) => {
+  console.log('host => ' , host);
+  console.log('port => ', port);
+  console.log('username => ' , username);
+  console.log('password => ' ,password);
+  console.log('database => ', database);
     return [
         {
             provide: 'DATA_SOURCE',
